@@ -1,6 +1,7 @@
 # dependencies
 /node_modules
 client/node_modules
+*.lock
 
 # misc
 .DS_Store
