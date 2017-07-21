@@ -12,3 +12,11 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
+
+// Routes
+
+const interest_calc_routes = require('./apis/interest_calc/routes');
+
+app.use('/api/interest-calc', interest_calc_routes);
+
+module.exports = app;
