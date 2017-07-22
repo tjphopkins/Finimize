@@ -13,10 +13,17 @@ app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
 
+
 // Routes
 
-const interest_calc_routes = require('./apis/interest_calc/routes');
+const interestCalcRoutes = require('./apis/interest_calc/routes');
+app.use('/api/interest-calc', interestCalcRoutes);
 
-app.use('/api/interest-calc', interest_calc_routes);
+
+// Middleware
+
+const ajaxErrorHandler = require('./apis/middleware/errorHandling').ajaxErrorHandler;
+app.use(ajaxErrorHandler);
+
 
 module.exports = app;
