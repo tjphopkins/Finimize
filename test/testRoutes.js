@@ -86,10 +86,10 @@ describe('Interest Calculator Routes', () => {
                 });
             }
         )
-        it('with currency param as USD calls getMonthlyBalances with converted params',
-                (done) => {
-            getMonthlyBalancesSpy = sinon.spy(getMonthlyBalances);
-            expect(getMonthlyBalancesSpy).to.have.been.called();
-        })
+        // it('with currency param as USD calls getMonthlyBalances with converted params',
+        //         (done) => {
+        //     getMonthlyBalancesSpy = sinon.spy(getMonthlyBalances);
+        //     expect(getMonthlyBalancesSpy).to.have.been.called();
+        // })
     });
 });
