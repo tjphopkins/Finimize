@@ -59,9 +59,13 @@ router.get('/monthly-balances', function(req, res) {
         monthlyDeposit = monthlyDeposit * exchangeRate;
     }
 
-    const monthlyBalances = getMonthlyBalances(
+    let monthlyBalances = getMonthlyBalances(
         initialBalance, periodsPerYear, annualInterest,
         monthlyDeposit, 12 * 50);
+
+    monthlyBalances = monthlyBalances.map((balance, month) => {
+        return {'month': month, 'amount': balance};
+    })
 
     res.json({
         'currency': currency ? currency : 'GBP',

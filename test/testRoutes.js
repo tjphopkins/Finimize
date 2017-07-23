@@ -26,6 +26,8 @@ describe('Interest Calculator Routes', () => {
                     expect(res).to.have.status(200);
                     expect(res.body.currency).to.equal('GBP');
                     expect(res.body.monthlyBalances).to.have.lengthOf(600);
+                    expect(res.body.monthlyBalances[0]).to.eql(
+                        {'month': 0, 'amount': 100})
                   done();
                 });
             }
