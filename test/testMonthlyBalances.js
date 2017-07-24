@@ -18,8 +18,8 @@ describe('Interest Calculator', () => {
             0.00,
             0.00,
             0.00
-        ])}
-    )
+        ]);
+    });
     it('No monthly deposits', () => {
         expect(getMonthlyBalances(100, 12, 0.01, 0, 12)).to.eql([
             100,
@@ -34,8 +34,8 @@ describe('Interest Calculator', () => {
             100.75,
             100.84,
             100.92
-        ])}
-    )
+        ]);
+    });
     it('Monthly interest', () => {
         expect(getMonthlyBalances(100, 12, 0.01, 10, 12)).to.eql([
             100.00,
@@ -50,8 +50,8 @@ describe('Interest Calculator', () => {
             191.05,
             201.21,
             211.38
-        ])}
-    )
+        ]);
+    });
     it('Quarterly interest', () => {
         expect(getMonthlyBalances(100, 4, 0.01, 10, 12)).to.eql([
             100.00,
@@ -66,8 +66,8 @@ describe('Interest Calculator', () => {
             191.05,
             201.05,
             211.55
-        ])}
-    )
+        ]);
+    });
     it('Yearly interest', () => {
         expect(getMonthlyBalances(100, 1, 0.01, 10, 12)).to.eql([
             100.00,
@@ -82,6 +82,6 @@ describe('Interest Calculator', () => {
             191.10,
             201.10,
             211.10
-        ])}
-    )
+        ]);
+    });
 });

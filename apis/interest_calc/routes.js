@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-let request = require('request');
+const request = require('request');
 
 const getMonthlyBalances = require('./monthlyBalances');
 
 
-let getAndValidateParamOrError = function(
-        req, param, required=true, type='number', allowedValues=null) {
+function getAndValidateParamOrError(
+        req, param, required = true, type = 'number', allowedValues = null) {
     const value = req.query[param];
     if ([undefined, ''].includes(value)) {
         if (!required) {
@@ -16,8 +16,8 @@ let getAndValidateParamOrError = function(
         throw new Error(`Missing Param ${param}`);
     }
     if (
-            (type === 'number' && isNaN(value)) |
-            (type != 'number' && typeof(value) != type) |
+            (type === 'number' && isNaN(value)) ||
+            (type !== 'number' && typeof value !== type) ||
             (allowedValues != null && !allowedValues.includes(value))
     ) {
         // TODO: Create custom Invalid Param error class
@@ -27,19 +27,20 @@ let getAndValidateParamOrError = function(
 }
 
 
-let getGbpUsdExchangeRate = function() {
+function getGbpUsdExchangeRate() {
     request(
         'http://api.fixer.io/latest?base=GBP',
-        function(error, response, body) {
-            if (response.statusCode != 200) {
+        (error, response) => {
+            if (response.statusCode !== 200) {
                 throw new Error('Could not retrieve exchange rate');
             }
             return JSON.parse(response.body).rates.USD;
-    })
+        }
+    );
 }
 
 
-router.get('/monthly-balances', function(req, res) {
+router.get('/monthly-balances', (req, res) => {
     let initialBalance = Number(
         getAndValidateParamOrError(req, 'initialBalance'));
     const periodsPerYear = Number(
@@ -47,16 +48,16 @@ router.get('/monthly-balances', function(req, res) {
     let monthlyDeposit = Number(
         getAndValidateParamOrError(req, 'monthlyDeposit'));
     const currency = getAndValidateParamOrError(
-        req, 'currency', required=false, type='string',
-        allowedValues=['USD', 'GBP']);
+        req, 'currency', required = false, type = 'string',
+        allowedValues = ['USD', 'GBP']);
 
     let annualInterest = getAndValidateParamOrError(req, 'annualInterest');
-    annualInterest = annualInterest / 100;
+    annualInterest /= 100;
 
-    if (currency && currency != 'GBP') {
+    if (currency && currency !== 'GBP') {
         const exchangeRate = getGbpUsdExchangeRate();
-        initialBalance = initialBalance * exchangeRate;
-        monthlyDeposit = monthlyDeposit * exchangeRate;
+        initialBalance *= exchangeRate;
+        monthlyDeposit *= exchangeRate;
     }
 
     let monthlyBalances = getMonthlyBalances(
@@ -64,14 +65,14 @@ router.get('/monthly-balances', function(req, res) {
         monthlyDeposit, 12 * 50);
 
     monthlyBalances = monthlyBalances.map((balance, month) => {
-        return {'month': month, 'amount': balance};
-    })
+        return {month, amount: balance};
+    });
 
     res.json({
-        'currency': currency ? currency : 'GBP',
-        'monthlyBalances': monthlyBalances
+        currency: currency || 'GBP',
+        monthlyBalances
     });
-})
+});
 
 
 module.exports = router;

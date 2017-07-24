@@ -1,8 +1,8 @@
 const assert = require('assert');
 
 
-let oneMonthInvestment = function(
-        balance,  periodsPerYear, annualInterest,
+function oneMonthInvestment(
+        balance, periodsPerYear, annualInterest,
         monthlyDeposit, monthsElapsed) {
     assert([12, 4, 1].includes(periodsPerYear));
     const modulo = 12 / periodsPerYear;
@@ -16,9 +16,9 @@ let oneMonthInvestment = function(
 }
 
 
-let getMonthlyBalances = function(
+function getMonthlyBalances(
         initialBalance, periodsPerYear, annualInterest,
-        monthlyDeposit, investedMonths, monthlyBalances=[], monthsElapsed=0) {
+        monthlyDeposit, investedMonths, monthlyBalances = [], monthsElapsed = 0) {
     /*
     :arg initialBalance Number
     :arg periodsPerYear Number - Number of compounding periods per year
@@ -34,7 +34,7 @@ let getMonthlyBalances = function(
     if (monthsElapsed === investedMonths) {
         return monthlyBalances;
     }
-    let newBalance = oneMonthInvestment(
+    const newBalance = oneMonthInvestment(
         initialBalance, periodsPerYear, annualInterest,
         monthlyDeposit, monthsElapsed
     );
