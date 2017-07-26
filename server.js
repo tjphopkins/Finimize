@@ -16,7 +16,7 @@ app.listen(app.get('port'), () => {
 
 // Routes
 
-const interestCalcRoutes = require('./apis/interest_calc/routes');
+const interestCalcRoutes = require('./apis/interest-calc/routes');
 app.use('/api/interest-calc', interestCalcRoutes);
 
 
