@@ -21,9 +21,9 @@ class SelectInput extends Component {
         const paramName = this.props.paramName;
         const params = Object.assign(
             this.props.params, {[paramName]: value});
-        paramsChanged(params);
+        this.props.paramsChanged(params);
         if (value !== '') {
-            requestNewData(params);
+            this.props.requestNewData(params);
         }
 
         this.setState({value})

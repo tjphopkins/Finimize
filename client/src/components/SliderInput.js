@@ -20,10 +20,10 @@ class SliderInput extends Component {
 
 		const paramName = this.props.paramName;
 		const params = Object.assign(
-			this.props.params, {[paramName]: value / 100});
-		paramsChanged(params);
+			this.props.params, {[paramName]: value});
+		this.props.paramsChanged(params);
 		if (value !== '') {
-			requestNewData(params);
+			this.props.requestNewData(params);
 		}
 
 		this.setState({value})
