@@ -26,6 +26,9 @@ class Main extends Component {
 
                     <p className="input-label">How much interest will you earn per year?</p>
                     <SliderInput paramName='annualInterest' defaultValue={4}/>
+
+                    <p className="input-label">How frequently will the interest be paid?</p>
+                    <SelectInput paramName='periodsPerYear' defaultValue={12}/>
                 </div>
                 <div className="financial-display">
                     <DisplayGraph data={this.props.data}/>
