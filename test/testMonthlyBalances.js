@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const getMonthlyBalances = require('../apis/interest_calc/monthlyBalances');
+const getMonthlyBalances = require('../apis/interest-calc/monthlyBalances');
 
 
 describe('Interest Calculator', () => {

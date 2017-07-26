@@ -26,39 +26,18 @@ function getAndValidateParamOrError(
     return value;
 }
 
-
-function getGbpUsdExchangeRate() {
-    request(
-        'http://api.fixer.io/latest?base=GBP',
-        (error, response) => {
-            if (response.statusCode !== 200) {
-                throw new Error('Could not retrieve exchange rate');
-            }
-            return JSON.parse(response.body).rates.USD;
-        }
-    );
-}
-
-
-router.get('/monthly-balances', (req, res) => {
+function getMonthlyBalancesFromReq(req, res, currency, exchangeRate) {
     let initialBalance = Number(
         getAndValidateParamOrError(req, 'initialBalance'));
     const periodsPerYear = Number(
         getAndValidateParamOrError(req, 'periodsPerYear'));
     let monthlyDeposit = Number(
         getAndValidateParamOrError(req, 'monthlyDeposit'));
-    const currency = getAndValidateParamOrError(
-        req, 'currency', required = false, type = 'string',
-        allowedValues = ['USD', 'GBP']);
-
     let annualInterest = getAndValidateParamOrError(req, 'annualInterest');
     annualInterest /= 100;
 
-    if (currency && currency !== 'GBP') {
-        const exchangeRate = getGbpUsdExchangeRate();
-        initialBalance *= exchangeRate;
-        monthlyDeposit *= exchangeRate;
-    }
+    initialBalance *= exchangeRate;
+    monthlyDeposit *= exchangeRate;
 
     let monthlyBalances = getMonthlyBalances(
         initialBalance, periodsPerYear, annualInterest,
@@ -72,6 +51,30 @@ router.get('/monthly-balances', (req, res) => {
         currency: currency || 'GBP',
         monthlyBalances
     });
+}
+
+router.get('/monthly-balances', (req, res) => {
+    const currency = getAndValidateParamOrError(
+        req, 'currency', false, 'string', ['USD', 'GBP']);
+
+    let exchangeRate = 1;
+
+    if (currency && currency !== 'GBP') {
+        request(
+            'http://api.fixer.io/latest?base=GBP',
+            (error, response) => {
+                if (response.statusCode !== 200) {
+                    throw new Error('Could not retrieve exchange rate');
+                }
+                exchangeRate = JSON.parse(response.body).rates.USD;
+                getMonthlyBalancesFromReq(
+                    req, res, currency, exchangeRate);
+            }
+        );
+    } else {
+        getMonthlyBalancesFromReq(
+            req, res, currency, exchangeRate);
+    }
 });
 
 
