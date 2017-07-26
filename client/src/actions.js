@@ -57,6 +57,9 @@ function fetchData(params, dispatch) {
 
 
 function fetchDataDebounced(params, dispatch) {
+    // debounce so that we don't make unnecessary requests when a user is still
+    // changing the input
+    // TODO: Kill off in-flight requests when a new one is made
     _.debounce(fetchData, 1000)(params, dispatch);
 }
 

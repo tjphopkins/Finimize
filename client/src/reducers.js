@@ -37,6 +37,8 @@ const reducer = (state = initialState, action) => {
                 params: action.params
             };
         case actionTypes.NEW_DATA_RETRIEVED:
+            // Only update the data if the params match those in the store
+            // i.e. if it matches the current inputs
             if (action.params !== state.params) {
                 return state;
             }
