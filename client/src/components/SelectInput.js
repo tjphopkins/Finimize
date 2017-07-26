@@ -32,12 +32,15 @@ class SelectInput extends Component {
     render() {
         const { value } = this.state
 
+        let options = []
+        for (let option of this.props.options) {
+            options.push(<option value={option.value}>{option.label}</option>)
+        }
+
         return (
             <div className="fmz-select">
                 <select name="cars" value={value} onChange={this.handleChange.bind(this)}>
-                    <option value="12">Monthly</option>
-                    <option value="4">Quarterly</option>
-                    <option value="1">Yearly</option>
+                    {options}
                 </select>
             </div>
         )
@@ -48,6 +51,7 @@ class SelectInput extends Component {
 SelectInput.propTypes = {
     defaultValue: PropTypes.number,
     paramName: PropTypes.string.isRequired,
+    options: PropTypes.array.isRequired,
     params: PropTypes.object.isRequired
 }
 
