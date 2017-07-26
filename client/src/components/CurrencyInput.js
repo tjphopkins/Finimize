@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import './CurrencyInput.css'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import './CurrencyInput.css';
+import { paramsChanged, requestNewData } from '../actions';
 
-export default class CurrencyInput extends Component {
+class CurrencyInput extends Component {
 	constructor(props) {
 		super(props)
 
@@ -13,8 +15,17 @@ export default class CurrencyInput extends Component {
 	}
 
 	handleChange(e) {
-		const value = e.target.value
-		this.setState({value})
+		const value = e.target.value;
+
+		const paramName = this.props.paramName;
+		const params = Object.assign(
+			this.props.params, {[paramName]: value});
+		this.props.paramsChanged(params);
+		if (value !== '') {
+			this.props.requestNewData(params);
+		}
+
+		this.setState({value});
 	}
 
 	handleFocus(e) {
@@ -39,6 +50,23 @@ export default class CurrencyInput extends Component {
 	}
 }
 
+
 CurrencyInput.propTypes = {
-	defaultValue: PropTypes.number
+	defaultValue: PropTypes.number,
+	paramName: PropTypes.string.isRequired,
+	params: PropTypes.object.isRequired
 }
+
+const mapStateToProps = (state) => {
+    return {
+        params: state.params,
+    };
+};
+
+
+const mapDispatchToProps = {
+    paramsChanged,
+    requestNewData
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrencyInput);
