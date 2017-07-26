@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import url from 'url';
+import _ from 'lodash';
 
 import { actionTypes } from './constants'
 
@@ -26,7 +27,7 @@ export function paramsChanged(params) {
 // Thunk action creators
 export const requestNewData = (params) => {
     return dispatch => {
-        return fetchData(params, dispatch);
+        return  fetchDataDebounced(params, dispatch);
     }
 }
 
@@ -47,6 +48,11 @@ function parseResponse(response) {
             with status: ${response.status}`);
     }
 };
+
+
+function fetchDataDebounced(params, dispatch) {
+    _.debounce(fetchData, 1000)(params, dispatch)
+}
 
 
 function fetchData(params, dispatch) {
