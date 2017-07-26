@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import CurrencyInput from './CurrencyInput'
 import SliderInput from './SliderInput'
+import SelectInput from './SelectInput'
 import DisplayGraph from './DisplayGraph'
 import '../App.css';
 

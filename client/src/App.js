@@ -5,6 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 import reducer  from './reducers';
 import Main from './components/Main';
 
+
 class App extends Component {
 
     render() {
