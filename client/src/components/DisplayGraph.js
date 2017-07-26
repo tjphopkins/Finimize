@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { VictoryLine, VictoryChart } from 'victory'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { VictoryLine, VictoryChart } from 'victory';
 
 export default class DisplayGraph extends Component {
 

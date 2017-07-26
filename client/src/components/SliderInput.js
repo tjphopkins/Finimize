@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import './SliderInput.css'
+import './SliderInput.css';
 import { paramsChanged, requestNewData } from '../actions';
 
 
 class SliderInput extends Component {
 
 	constructor(props) {
-		super(props)
+		super(props);
 
 		this.state = {
 			value: props.defaultValue
-		}
+		};
 	}
 
 	handleChange(e) {
-		const value = e.target.value
+		const value = e.target.value;
 
 		const paramName = this.props.paramName;
 		const params = Object.assign(
@@ -26,23 +26,25 @@ class SliderInput extends Component {
 			this.props.requestNewData(params);
 		}
 
-		this.setState({value})
+		this.setState({value});
 	}
 
 	render() {
-		const { value } = this.state
+		const { value } = this.state;
 
 		return (
 			<div className="fmz-slider">
 				<p>{value}%</p>
-				<input type="range"
+				<input
+					type="range"
 					value={value}
 					min={0}
 					max={10}
 					step={0.25}
-					onChange={this.handleChange.bind(this)}/>
+					onChange={this.handleChange.bind(this)}
+				/>
 			</div>
-		)
+		);
 	}
 }
 
@@ -50,8 +52,10 @@ class SliderInput extends Component {
 SliderInput.propTypes = {
 	defaultValue: PropTypes.number,
 	paramName: PropTypes.string.isRequired,
-	params: PropTypes.object.isRequired
-}
+	params: PropTypes.object.isRequired,
+	paramsChanged: PropTypes.func.isRequired,
+	requestNewData: PropTypes.func.isRequired
+};
 
 const mapStateToProps = (state) => {
     return {

@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import './SelectInput.css'
+import './SelectInput.css';
 import { paramsChanged, requestNewData } from '../actions';
 
 
 class SelectInput extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             value: props.defaultValue
-        }
+        };
     }
 
     handleChange(e) {
-        const value = e.target.value
+        const value = e.target.value;
 
         const paramName = this.props.paramName;
         const params = Object.assign(
@@ -26,15 +26,15 @@ class SelectInput extends Component {
             this.props.requestNewData(params);
         }
 
-        this.setState({value})
+        this.setState({value});
     }
 
     render() {
-        const { value } = this.state
+        const { value } = this.state;
 
-        let options = []
+        const options = [];
         for (let option of this.props.options) {
-            options.push(<option value={option.value}>{option.label}</option>)
+            options.push(<option value={option.value}>{option.label}</option>);
         }
 
         return (
@@ -43,7 +43,7 @@ class SelectInput extends Component {
                     {options}
                 </select>
             </div>
-        )
+        );
     }
 }
 
@@ -52,8 +52,10 @@ SelectInput.propTypes = {
     defaultValue: PropTypes.number,
     paramName: PropTypes.string.isRequired,
     options: PropTypes.array.isRequired,
-    params: PropTypes.object.isRequired
-}
+    params: PropTypes.object.isRequired,
+    requestNewData: PropTypes.func.isRequired,
+    paramsChanged: PropTypes.func.isRequired
+};
 
 const mapStateToProps = (state) => {
     return {

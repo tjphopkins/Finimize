@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import url from 'url';
 import _ from 'lodash';
 
-import { actionTypes } from './constants'
+import { actionTypes } from './constants';
 
 
 // Regular action creators
@@ -11,8 +11,7 @@ export function newDataRetrieved(params, data) {
         type: actionTypes.NEW_DATA_RETRIEVED,
         params,
         data
-    }
-
+    };
 }
 
 
@@ -20,38 +19,24 @@ export function paramsChanged(params) {
     return {
         type: actionTypes.PARAMS_CHANGED,
         params
-    }
-}
-
-
-// Thunk action creators
-export const requestNewData = (params) => {
-    return dispatch => {
-        return  fetchDataDebounced(params, dispatch);
-    }
+    };
 }
 
 
 function buildUrl(baseUrl, params) {
-    let urlObj = url.parse(baseUrl);
+    const urlObj = url.parse(baseUrl);
     urlObj.query = urlObj.query || {};
     Object.assign(urlObj.query, params);
     return urlObj.format();
-};
+}
 
 
 function parseResponse(response) {
     if (response.ok) {
         return response.json();
-    } else {
-        throw new Error(`Request failed for url: ${response.url} \
-            with status: ${response.status}`);
     }
-};
-
-
-function fetchDataDebounced(params, dispatch) {
-    _.debounce(fetchData, 1000)(params, dispatch)
+    throw new Error(`Request failed for url: ${response.url} \
+        with status: ${response.status}`);
 }
 
 
@@ -68,4 +53,18 @@ function fetchData(params, dispatch) {
     .catch((error) => {
         console.error(error);
     });
+}
+
+
+function fetchDataDebounced(params, dispatch) {
+    _.debounce(fetchData, 1000)(params, dispatch);
+}
+
+
+// Thunk action creators
+export const requestNewData = (params) => {
+    return dispatch => {
+        return fetchDataDebounced(params, dispatch);
+    };
 };
+
